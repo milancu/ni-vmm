@@ -1,16 +1,19 @@
 package cz.cvut.fit.vmm.project.service
 
-import com.google.cloud.firestore.Firestore
-import com.google.firebase.cloud.FirestoreClient
 import com.google.firebase.cloud.StorageClient
 import cz.cvut.fit.vmm.project.model.Image
+import cz.cvut.fit.vmm.project.repository.ImageRepository
+import mu.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.util.concurrent.TimeUnit
 
+private val log = KotlinLogging.logger {}
 
 @Service
-class ImageService {
+class ImageService(
+    private val imageRepository: ImageRepository
+) {
     fun uploadImage(file: MultipartFile): String {
         val bucket = StorageClient.getInstance().bucket()
         val name: String = file.originalFilename ?: "undefined"
@@ -18,18 +21,18 @@ class ImageService {
 
         val url = blob.signUrl(24, TimeUnit.HOURS)
 
-        return ""
+        return url.path
     }
 
-    fun createImage(file: MultipartFile): String {
-        val firestore: Firestore = FirestoreClient.getFirestore();
+    fun createImage(file: MultipartFile) {
+        val link = uploadImage(file)
+
         val image = Image(
-            id = "1",
-            link = "",
-            filename = file.originalFilename!!,
-            histogram = null
+            filename = file.originalFilename,
+            link = link
         )
-        firestore.collection("image").document(image.id).set(image)
-        return ""
+        log.info { "Saved image, ${image.id}" }
+
+        imageRepository.save(image)
     }
 }

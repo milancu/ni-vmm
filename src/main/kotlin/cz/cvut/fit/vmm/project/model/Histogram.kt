@@ -1,7 +1,15 @@
 package cz.cvut.fit.vmm.project.model
 
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+
+@Entity
 class Histogram(
-    val redValues: List<Int>,
-    val greenValues: List<Int>,
-    val blueValues: List<Int>
+    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    val id: String? = null,
+    val redValues: List<Int>? = null,
+    val greenValues: List<Int>? = null,
+    val blueValues: List<Int>? = null
 )
