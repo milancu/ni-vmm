@@ -20,7 +20,6 @@ class ImageService(
         val blob = bucket.create(name, file.bytes, file.contentType)
 
         val url = blob.signUrl(24, TimeUnit.HOURS)
-
         return url.path
     }
 
@@ -31,8 +30,7 @@ class ImageService(
             filename = file.originalFilename,
             link = link
         )
-        log.info { "Saved image, ${image.id}" }
-
         imageRepository.save(image)
+        log.info { "Saved image, id:${image.id}" }
     }
 }

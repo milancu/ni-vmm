@@ -8,7 +8,7 @@ import jakarta.persistence.Id
 @Entity
 class Histogram(
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: String? = null,
+    val id: Int? = null,
     val redValues: List<Int>? = null,
     val greenValues: List<Int>? = null,
     val blueValues: List<Int>? = null
