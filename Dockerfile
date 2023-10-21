@@ -15,7 +15,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Zkopírujte JAR soubor z builder fáze
-COPY --from=builder /app/target/your-application.jar app.jar
+COPY --from=builder /app/target/project-0.0.1-SNAPSHOT.jar app.jar
 
 # Exponujte port, na kterém bude aplikace běžet (nahraďte 8080, pokud používáte jiný port)
 EXPOSE 8080
